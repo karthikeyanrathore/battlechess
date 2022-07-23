@@ -12,13 +12,34 @@
 
 <body> 
 <div id="board" style="width: 600px"></div>
-
+<button onclick="newGame()">New Game</button>
+<button onclick="computerMove()">Computer Move</button>
+<p></p>
 
 <script type="text/javascript">
 var board = ChessBoard('board', {
-  position: 'start'
+  position: 'start',
+  draggable: true,
 });
 
+function newGame(){
+  $.post('/newgame', function(r){
+    document.querySelector('p').innerText = '';
+    board.position(r);
+  });
+}
+
+function computerMove(){
+  $.post('/computermove', function(r){
+    //document.querySelector('p').innerText = "New Game";
+    if (r.includes("gameover")){
+      document.querySelector('p').innerText = 'game over';
+    } else{
+      document.querySelector('p').innerText = '';
+      board.position(r);
+    }
+  });
+}
 
 </script>
 
